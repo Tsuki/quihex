@@ -3,7 +3,8 @@ import path from 'path';
 import fileUtil from './file-util'
 import expandTilde from 'expand-tilde'
 import pathExists from 'path-exists'
-import moment from 'moment'
+import moment from "moment";
+
 class HexoUtil {
 	loadHexoConfig(hexoRoot) {
 		var confPath = path.join(hexoRoot, '_config.yml');
@@ -64,14 +65,14 @@ class HexoUtil {
 	}
 
 	parseFileName(rule,hexoPostObj){
-		var date = hexoPostObj.date
+		var date = moment(hexoPostObj.cdate);
 		var filenameData = {
 			year: date.format('YYYY'),
 			month: date.format('MM'),
 			i_month: date.format('M'),
 			day: date.format('DD'),
 			i_day: date.format('D'),
-			title: hexoPostObj.title
+			title: hexoPostObj.filename
 		};
 		for (var key in filenameData){
 			rule = rule.replace(new RegExp(":"+key),filenameData[key])

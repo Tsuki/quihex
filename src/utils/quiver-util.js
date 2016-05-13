@@ -159,7 +159,7 @@ class QuiverUtil {
         return ('0' + val).slice(-2);
       };
       obj.date = `${cdate.getFullYear()}-${toDD(cdate.getMonth() + 1)}-${toDD(cdate.getDate())} ${toDD(cdate.getHours())}:${toDD(cdate.getMinutes())}:${toDD(cdate.getSeconds())}`;
-
+      obj.cdate = cdate;
       obj.tags = tags;
       obj.content = noteObj.content.cells
         .map((cell) => {

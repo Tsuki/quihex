@@ -66,9 +66,8 @@ class QuihexCore {
     return hexoUtil.loadHexoConfig(config.hexo)
       .then((hexoConfig) => {
         var postsRoot = path.join(config.hexo, hexoConfig.source_dir, '_posts');
-        //TODO  add config for file name
         var filename = hexoUtil.parseFileName(hexoConfig.new_post_name, hexoPostObj);
-        var filePath = path.join(postsRoot, `${filename}.md`);
+        var filePath = path.join(postsRoot, `${filename}`);
 
         return fileUtil.writeFilePromise(filePath, hexoUtil.toHexoPostString(hexoPostObj), 'utf-8');
       });
@@ -79,14 +78,15 @@ class QuihexCore {
       .then((hexoConfig) => {
 
         var postsRoot = path.join(quihexConfig.hexo, hexoConfig.source_dir, '_posts');
-        var lastFilePath = path.join(postsRoot, `${hexoPostObj.filename}.md`);
+        var filename = hexoUtil.parseFileName(hexoConfig.new_post_name, hexoPostObj);
+        var lastFilePath = path.join(postsRoot, `${filename}`);
 
         var createStatus = (status) => {
           return {
             hexoPostObj: hexoPostObj,
             status: status
           }
-        }
+        };
 
         // if quihex note has not sync tag, skip sync it.
         if (hexoPostObj.tags.filter((tag) => {

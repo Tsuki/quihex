@@ -2,7 +2,10 @@ import clct from './cli-color-template';
 
 function display(header, msg) {
   var log = header;
+  // Some time msg not work
   if (typeof msg !== 'undefined' && msg && msg.length > 0) {
+    log += `: ${msg}`;
+  }else{
     log += `: ${msg}`;
   }
   console.log(log);

@@ -1,6 +1,7 @@
 import jsonFile from 'jsonfile';
 import fs from 'fs';
-import path from 'path';
+import Path from 'path';
+import mkdirp from 'mkdirp';
 
 /**
  * Wrapper fs for promise
@@ -30,6 +31,11 @@ class FileUtil {
 
   writeFilePromise(path, text, encoding) {
     return new Promise((resolve, reject) => {
+      mkdirp(Path.dirname(path), (err) => {
+        if (err) {
+          reject(err);
+        }
+      });
       fs.writeFile(path, text, encoding, (err) => {
         if (err) {
           reject(err);
@@ -45,7 +51,7 @@ class FileUtil {
         this.readFilePromise(firstFilePath),
         this.readFilePromise(secondFilePath)
       ]
-      )
+    )
       .then((results) => {
         return Promise.resolve(results[0] === results[1]);
       });
