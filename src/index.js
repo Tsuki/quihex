@@ -10,6 +10,7 @@ import qconf from './quihex-config';
 
 import logt from './utils/log-template';
 import clct from './utils/cli-color-template';
+import hexoUtil from './utils/hexo-util.js';
 
 const _ex = (msg) => {
   return clct.example(`(ex. ${msg})`);
