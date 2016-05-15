@@ -1,8 +1,10 @@
 import jsonFile from 'jsonfile';
 import fs from 'fs';
+import fse from 'fs-extra';
 import Path from 'path';
 import mkdirp from 'mkdirp';
 
+import logt from './log-template';
 /**
  * Wrapper fs for promise
  */
@@ -45,13 +47,18 @@ class FileUtil {
     });
   }
 
-  writeResourcesPromise(path) {
+  writeResourcesPromise(path, dest) {
     return new Promise((resolve, reject) => {
-      mkdirp(path.replace(/\.[^/.]+$/, ""), (err) => {
+      path = path.replace(/\.[^/.]+$/, "");
+      mkdirp(path, (err) => {
         if (err) {
           reject(err);
         }
       });
+      fse.copy(dest, path, function (err) {
+        if (err) return logt.info(err);
+        logt.info("success!")
+      })
     });
   }
 

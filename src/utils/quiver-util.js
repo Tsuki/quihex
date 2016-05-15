@@ -160,12 +160,13 @@ class QuiverUtil {
       obj.date = `${cdate.getFullYear()}-${toDD(cdate.getMonth() + 1)}-${toDD(cdate.getDate())} ${toDD(cdate.getHours())}:${toDD(cdate.getMinutes())}:${toDD(cdate.getSeconds())}`;
       obj.cdate = cdate;
       obj.tags = tags;
+      obj.uuid = noteObj.meta.uuid;
       obj.content = noteObj.content.cells
         .map((cell) => {
           if (cell.type === 'markdown') {
-            return cell.data.replace(/quiver-image-url\//gi, '');
+            return cell.data.replace(/quiver-image-url\//gi, '').replace(/!\[(.*?)]\((.+?)(\))/gi, '{% asset_img $2 [$1] %}');
           } else if (cell.type === 'text') {
-            return `{% raw %}\n${cell.data.replace(/quiver-image-url\//gi, '')}\n{% endraw %}`;
+            return `{% raw %}\n${cell.data.replace(/quiver-image-url\//gi, '').replace(/!\[(.*?)]\((.+?)(\))/gi, '{% asset_img $2 [$1] %}')}\n{% endraw %}`;
           } else if (cell.type === 'code') {
             return `\`\`\`${cell.language}\n${cell.data}\n\`\`\``;
           } else if (cell.type === 'latex') {

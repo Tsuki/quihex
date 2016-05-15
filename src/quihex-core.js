@@ -4,6 +4,8 @@ import pathExists from 'path-exists';
 import quiverUtil from './utils/quiver-util'
 import fileUtil from './utils/file-util'
 import hexoUtil from './utils/hexo-util';
+import logt from './utils/log-template';
+import fs from "fs";
 
 class QuihexCore {
 
@@ -42,6 +44,19 @@ class QuihexCore {
       });
   }
 
+  _getSyncNoteResourcesPaths(quihexConfig, uuid) {
+    return this._getSyncNotebookPath(quihexConfig)
+      .then((syncNotebookPath) => {
+        return quiverUtil.getNotePaths(syncNotebookPath);
+      })
+      .then((paths) => {
+        return Promise.resolve(
+          paths.filter((filepath) => {
+            return path.basename(filepath) === `${uuid}.qvnote`;
+          }));
+      });
+  }
+
   _getSyncNotebookPath(quihexConfig) {
     return new Promise((resolve) => {
       resolve(path.join(quihexConfig.quiver, quihexConfig.syncNotebook.uuid + '.qvnotebook'));
@@ -68,8 +83,19 @@ class QuihexCore {
         var postsRoot = path.join(config.hexo, hexoConfig.source_dir, '_posts');
         var filename = hexoUtil.parseFileName(hexoConfig.new_post_name, hexoPostObj);
         var filePath = path.join(postsRoot, `${filename}`);
-        if(hexoConfig.post_asset_folder){
-          fileUtil.writeResourcesPromise(filePath);
+        var resources = 'init resources folder';
+        if (hexoConfig.post_asset_folder) {
+          this._getSyncNoteResourcesPaths(config, hexoPostObj.uuid)
+            .then((paths) => {
+                resources = `${paths}/resources/`;
+                return pathExists(`${paths}/resources/`);
+              }
+            ).then((result)=> {
+              if (result) {
+                fileUtil.writeResourcesPromise(filePath, resources);
+              }
+            }
+          );
         }
         return fileUtil.writeFilePromise(filePath, hexoUtil.toHexoPostString(hexoPostObj), 'utf-8');
       });
