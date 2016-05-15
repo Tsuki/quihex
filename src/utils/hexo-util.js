@@ -19,8 +19,9 @@ class HexoUtil {
         config.date_format = ymlobj.date_format;
         config.time_format = ymlobj.time_format;
         config.new_post_name = ymlobj.new_post_name;
+        config.post_asset_folder = ymlobj.post_asset_folder;
 
-        if (!config.source_dir || !config.date_format || !config.time_format || !config.new_post_name) {
+        if (!config.source_dir || !config.date_format || !config.time_format || !config.new_post_name || !config.post_asset_folder) {
           return Promise.reject(new Error(`Hexo config file is not valid. [${path.join(hexoRoot, '_config.yml')}]`));
         }
 

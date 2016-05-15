@@ -45,6 +45,16 @@ class FileUtil {
     });
   }
 
+  writeResourcesPromise(path) {
+    return new Promise((resolve, reject) => {
+      mkdirp(path.replace(/\.[^/.]+$/, ""), (err) => {
+        if (err) {
+          reject(err);
+        }
+      });
+    });
+  }
+
   isEqualTextOfTwoFiles(firstFilePath, secondFilePath) {
     return Promise.all(
       [

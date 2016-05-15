@@ -4,6 +4,7 @@ import fs from 'fs';
 import fsSync from 'fs-sync';
 import expandTilde from 'expand-tilde';
 import fileUtil from './file-util';
+import logt from './log-template';
 
 class QuiverUtil {
 
@@ -149,11 +150,9 @@ class QuiverUtil {
     return new Promise((resolve) => {
       var title = noteObj.meta.title;
       var tags = noteObj.meta.tags;
-
       var obj = {};
       obj.filename = title.split(' ').join('-');
       obj.title = title;
-
       var cdate = new Date(noteObj.meta.created_at * 1000);
       var toDD = (val) => {
         return ('0' + val).slice(-2);
@@ -164,16 +163,19 @@ class QuiverUtil {
       obj.content = noteObj.content.cells
         .map((cell) => {
           if (cell.type === 'markdown') {
-            return cell.data;
+            return cell.data.replace(/quiver-image-url\//gi, '');
+          } else if (cell.type === 'text') {
+            return `{% raw %}\n${cell.data.replace(/quiver-image-url\//gi, '')}\n{% endraw %}`;
           } else if (cell.type === 'code') {
             return `\`\`\`${cell.language}\n${cell.data}\n\`\`\``;
+          } else if (cell.type === 'latex') {
+            return cell.data;
           }
         })
         .join('\n\n');
       resolve(obj);
     });
   }
-
 }
 
 export default new QuiverUtil();

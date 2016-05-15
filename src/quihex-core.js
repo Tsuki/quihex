@@ -68,7 +68,9 @@ class QuihexCore {
         var postsRoot = path.join(config.hexo, hexoConfig.source_dir, '_posts');
         var filename = hexoUtil.parseFileName(hexoConfig.new_post_name, hexoPostObj);
         var filePath = path.join(postsRoot, `${filename}`);
-
+        if(hexoConfig.post_asset_folder){
+          fileUtil.writeResourcesPromise(filePath);
+        }
         return fileUtil.writeFilePromise(filePath, hexoUtil.toHexoPostString(hexoPostObj), 'utf-8');
       });
   }
