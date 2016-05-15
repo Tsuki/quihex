@@ -115,7 +115,7 @@ command
               new: clct.new,
               update: clct.update,
               stable: clct.stable
-            }
+            };
 
             results.forEach((result) => {
               var status = result.status;
