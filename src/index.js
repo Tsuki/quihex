@@ -96,6 +96,7 @@ command
 
 command
   .command('sync')
+  .alias('s')
   .description('Sync quiver notes with hexo posts')
   .option('-y, --yes', 'Auto input yes')
   .option('-v, --verbose', 'Show all note status')
