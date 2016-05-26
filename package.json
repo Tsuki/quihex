@@ -1,6 +1,6 @@
 {
   "name": "quihex",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Sync blog posts to Hexo that are written by Quiver.",
   "preferGlobal": true,
   "bin": {
@@ -19,9 +19,9 @@
     "Hexo",
     "Quiver"
   ],
-  "author": "bobmk2",
+  "author": "Tsuki",
   "license": "MIT",
-  "homepage": "https://github.com/bobmk2/quihex",
+  "homepage": "https://github.com/Tsuki/quihex",
   "dependencies": {
     "cli-color": "^1.1.0",
     "commander": "^2.9.0",
